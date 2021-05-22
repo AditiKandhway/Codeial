@@ -6,4 +6,3 @@ const contentsController = require('../controllers/contents_controller');
 
 router.get('/details',contentsController.details);
 module.exports=router;
-  
