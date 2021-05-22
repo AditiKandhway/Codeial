@@ -1,9 +1,13 @@
 module.exports.profile=function(req,res)
 {
-  return res.end('<h1>User Profile</h1>');
+    return res.render('users',{
+      title:"Users"
+    });
 }
 
 module.exports.comment=function(req,res)
 {
-  return res.end('<h1>My Comments</h1>');
+    return res.render('home',{
+      title:"comment"
+    });
 }
