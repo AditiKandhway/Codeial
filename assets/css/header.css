@@ -1,0 +1,23 @@
+#head {
+  width: 100%;
+  background-color: #32a8b7; }
+  #head #mini-logo {
+    width: 10%;
+    padding: 16px 8px 8px 32px; }
+  #head .logo {
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: 700;
+    color: white;
+    font-family: sans-serif; }
+  #head span {
+    float: right;
+    padding: 8px;
+    margin-top: -40px; }
+    #head span a {
+      margin: 6px;
+      color: white;
+      font-size: 20px;
+      text-decoration: none;
+      font-weight: 500;
+      font-family: sans-serif; }

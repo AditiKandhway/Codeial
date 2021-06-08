@@ -1,0 +1,22 @@
+#foot{
+  background-color: #607d8b;
+  width:100%;
+  height:90px;
+  .fa-copyright{
+    color: white;
+    font-size: 20px;
+      padding:0px 8px 8px 12px;
+  }
+  #links{
+    display: inline-block;
+    li{
+      list-style: none;
+        margin: 4px;
+    }
+    a{
+      text-decoration: none;
+      color: white;
+      font-size: 20px;
+    }
+  }
+}
