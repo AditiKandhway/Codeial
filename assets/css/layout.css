@@ -1,5 +1,6 @@
-body {
+html, body {
   margin: 0;
+  height: 100%;
   /* text-align: center; */ }
-  body #layout-main {
+  html #layout-main, body #layout-main {
     height: 100%; }
