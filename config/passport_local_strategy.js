@@ -26,7 +26,6 @@ passport.use(new LocalStrategy({
       });
    }
 ));
-
 // serializing the user to decide which key to be kept in the cookies
 passport.serializeUser(function(user,done)
 {
@@ -44,7 +43,6 @@ passport.deserializeUser(function(id,done){
     return done(null,user);
   });
 });
-
 // check if the user is authenticated
 passport.checkAuthentication=function(req,res,next)
 {
@@ -56,7 +54,6 @@ passport.checkAuthentication=function(req,res,next)
   // if the user is not signed in
   return res.redirect('/users/sign-in');
 }
-
 passport.setAuthenticatedUser=function(req,res,next)
 {
   if(req.isAuthenticated())

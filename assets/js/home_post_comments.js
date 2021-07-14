@@ -19,8 +19,6 @@ class PostComments{
             self.deleteComment($(this));
         });
     }
-
-
     createComment(postId){
         let pSelf = this;
         this.newCommentForm.submit(function(e){
@@ -49,8 +47,6 @@ class PostComments{
                     console.log(error.responseText);
                 }
             });
-
-
         });
     }
 
@@ -78,26 +74,22 @@ class PostComments{
     deleteComment(deleteLink){
         $(deleteLink).click(function(e){
             e.preventDefault();
-
             $.ajax({
                 type: 'get',
                 url: $(deleteLink).prop('href'),
                 success: function(data){
                     $(`#comment-${data.data.comment_id}`).remove();
-
                     new Noty({
                         theme: 'relax',
                         text: "Comment Deleted",
                         type: 'success',
                         layout: 'topRight',
                         timeout: 1500
-
                     }).show();
                 },error: function(error){
                     console.log(error.responseText);
                 }
             });
-
         });
     }
 }

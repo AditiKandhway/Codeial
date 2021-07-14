@@ -1,8 +1,8 @@
 <link rel="stylesheet" href="/css/home.css">
 <div id="home-container">
 <section id ="feed-posts">
+    <h4> Posts </h4>
   <% if(locals.user) { %>
-  <h4> Posts </h4>
     <form action="/posts/create" id="new-post-form" method = "POST">
       <textarea name="content" rows="3" cols="30" required></textarea>
         <input type="submit" value ="Post">
@@ -26,7 +26,7 @@
                </p>
                <div class="post-comments">
                   <% if(locals.user) { %>
-                    <form action ="/comments/create" method="POST">
+                    <form id="post-<%=post._id %>-comments-form" action ="/comments/create" method="POST">
                       <input type="text" name="content" placeholder="Type here to add comment.. " required>
                       <input type="hidden" name="post" value="<%=post._id %>" >
                       <input type="submit" value = "Add comment">
@@ -35,10 +35,11 @@
                     <div class="post-comments-list">
                       <ul id="post-comments-<%=post._id %>">
                         <% for(comment of post.comments) { %>
+                          <li id="comment-<%=comment._id%>">
                           <p>
-                            <% if(locals.user && locals.user.id == post.user.id && locals.user.id==post.user.id) { %>
+                            <% if(locals.user && locals.user.id == comment.user.id) { %>
                               <small>
-                                <a href="/comments/destroy/<%= comment.id %>"> X </a>
+                                <a class="delete-comment-button" href="/comments/destroy/<%= comment.id %>"> X </a>
                               </small>
                               <% } %>
                             <%= comment.content %>
@@ -47,6 +48,8 @@
                               <%= comment.user.name %>
                               </small>
                             <% } %>
+                            </p>
+                            </li>
                         </ul>
                </div>
              </li>
@@ -54,8 +57,6 @@
            </ul>
         </div>
 </section>
-
-
 <section id="user-friends">
   <h4>Friends</h4>
   <% for(u of all_users) { %>
@@ -65,5 +66,5 @@
     <% } %>
 </section>
 </div>
-
+<script src="/js/home_post_comments.js"></script>
 <script src="/js/home_posts.js"></script>

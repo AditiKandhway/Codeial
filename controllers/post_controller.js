@@ -21,10 +21,11 @@ module.exports.create = async function(req,res)
     return res.redirect('back');
   }catch(err){
     req.flash('error', err);
-    return;
+    // added this to view the error on console as well
+    console.log(err);
+    return res.redirect('back');
   }
 }
-
 module.exports.destroy = async function(req,res)
 {
   try{
@@ -45,7 +46,7 @@ module.exports.destroy = async function(req,res)
           });
         }
         req.flash('success', 'Post and associated comments deleted!');
-          return res.redirect('back');
+        return res.redirect('back');
       }
       else{
         req.flash('error', 'You cannot delete this post!');
@@ -53,6 +54,6 @@ module.exports.destroy = async function(req,res)
       }
   }catch{
     req.flash('error', err);
-    return;
+    return res.redirect('back');
   }
 }
