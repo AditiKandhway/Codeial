@@ -16,7 +16,6 @@ module.exports.index = async function(req,res)
     posts:posts
   })
 }
-
 module.exports.destroy = async function(req,res)
 {
   try{
