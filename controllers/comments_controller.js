@@ -1,7 +1,7 @@
 
 const Comment = require('../models/comment');
 const Post = require('../models/Post');
-const commentMailer = require('../mailers/comments_mailer');
+const commentsMailer = require('../mailers/comments_mailer');
 // module.exports.create = function(req,res)
 // {
 //   Post.findById(req.body.post,function(err,post){
