@@ -2,44 +2,9 @@
 const Comment = require('../models/comment');
 const Post = require('../models/Post');
 const commentsMailer = require('../mailers/comments_mailer');
-// module.exports.create = function(req,res)
-// {
-//   Post.findById(req.body.post,function(err,post){
-//     if(post)
-//     {
-//       Comment.create({
-//         content:req.body.content,
-//         post:req.body.post,
-//         user:req.user._id
-//       },function(err,comment){
-//         // handle error
-//         post.comments.push(comment);
-//         post.save();
-//         res.redirect('/');
-//       });
-//     }
-//   });
-// }
-//
-// // while deleting a comment we need to add a post id to va variable so that we can
-// // again go to comment arrays in post to find that stored id and delete it from there.
-// module.exports.destroy = function(req,res)
-// {
-//   Comment.findById(req.params.id,function(err,comment){
-//     if(comment.user == req.user.id)
-//     {
-//       let postId = comment.post;
-//       comment.remove();
-//       Post.findByIdAndUpdate(postId,{$pull:{comments:req.params.id}},function(err,post){
-//         return res.redirect('back');
-//       })
-//     }
-//     else{
-//       return res.redirect('back');
-//     }
-//   });
-// }
-
+const queue = require('../config/kue');
+const commentEmailWorker = require('../workers/comment_email_worker');
+console.log(commentsMailer);
 module.exports.create = async function(req, res){
     try{
         let post = await Post.findById(req.body.post);
@@ -49,13 +14,22 @@ module.exports.create = async function(req, res){
                 post: req.body.post,
                 user: req.user._id
             });
-
             post.comments.push(comment);
             post.save();
             comment = await comment.populate('user','name email').execPopulate();
-            commentsMailer.newComment(comment);
+            // console.log(comment);
+            // commentsMailer.newComment(comment);
+            let job = queue.create('emails',comment).save(function(err){
+                if(err)
+                {
+                  console.log("error in creating a queue",err);
+                  return;
+                }
+                console.log("job enqueued",job.id);
+            })
             if(req.xhr)
             {
+              console.log("ok");
               return res.status(200).json({
                 data:{
                   comment:comment
@@ -64,11 +38,11 @@ module.exports.create = async function(req, res){
               });
             }
             req.flash('success','Comment published!');
-            res.redirect('/');
+            return res.redirect('back');
         }
     }catch(err){
         req.flash('Error', err);
-        return res.redirect('back');
+        return res.redirect('/');
     }
 }
 module.exports.destroy = async function(req, res){
@@ -77,7 +51,6 @@ module.exports.destroy = async function(req, res){
         if (comment.user == req.user.id){
             let postId = comment.post;
             comment.remove();
-
             let post = Post.findByIdAndUpdate(postId, { $pull: {comments: req.params.id}});
             // send the comment id which was deleted back to the views
             if(req.xhr)
@@ -89,7 +62,7 @@ module.exports.destroy = async function(req, res){
                 message:"Post deleted"
               });
             }
-            req.flash('success', 'Comment deleted!');
+            req.flash('success', 'Comment deleted uhi!');
             return res.redirect('back');
         }else{
             req.flash('error', 'Unauthorized');
@@ -97,6 +70,6 @@ module.exports.destroy = async function(req, res){
         }
     }catch(err){
         req.flash('error', err);
-        return res.redirect('back');
+        return;
     }
 }

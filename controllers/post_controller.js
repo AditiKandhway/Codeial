@@ -10,14 +10,15 @@ module.exports.create = async function(req,res)
     // check ajax request
     if(req.xhr)
     {
+      post = await post.populate('user','name').execPopulate();
       return res.status(200).json({
         data:{
           post:post
         },
-        message:"Post Created!"
+        message:"Post Created uhi!"
       });
     }
-    req.flash('success', 'Post published!');
+    req.flash('success', 'Post published rjfhry!');
     return res.redirect('back');
   }catch(err){
     req.flash('error', err);
@@ -42,7 +43,7 @@ module.exports.destroy = async function(req,res)
             data:{
               post_id:req.params.id
             },
-            message:"Post deleted"
+            message:"Post deleted!!"
           });
         }
         req.flash('success', 'Post and associated comments deleted!');
